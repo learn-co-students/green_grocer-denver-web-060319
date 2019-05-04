@@ -19,27 +19,6 @@ def consolidate_cart(cart)
   consolidated_cart_hash
 end
 
-sample_consolidated_cart = {"BEER" => {:price => 13.00, :clearance => false, :count => 3}}
-
-
-
-sample_coupon = [{:item => "BEER", :num => 2, :cost => 20.00},
-                 {:item => "BEER", :num => 2, :cost => 20.00}]
-
-
-###OBSERVATIONS BEFORE BED:
-###I may need to deconstruct apply_coupons and break the process into multiple
-###steps within the method.
-###Right now, the method is not picking up the "cart[a][:count] -=" line...
-###It looks like it's just going off regardless. However, commenting that line
-###out causes chaos. So it's something even more subtle. I feel like I need one
-###more layer of logical operation.
-##What I think is happening is the iteration is causing both sample_coupon elements
-##to be called regardless. But I want only one to be called and the other to
-##sit its ass on the sideline.
-
-
-#new_cart wanted: {BEER: :count 1, BEER W/COUPON: :count 1}
 def apply_coupons(cart, coupons)
       new_cart = {}
       if coupons == []
@@ -61,8 +40,6 @@ def apply_coupons(cart, coupons)
                       cart[a][:count] -= coupons[i][:num]
                       loop_count += 1
                     end
-
-                    #binding.pry
                     new_cart[a] = b
                     new_cart["#{a} W/COUPON"] = {}
                     new_cart["#{a} W/COUPON"][:price] = coupons[i][:cost]
@@ -78,10 +55,6 @@ def apply_coupons(cart, coupons)
         end
 new_cart
 end
-
-#if we have 5 coupons, each with :num 2, and we have let's say 5 beers we're getting,
-#then we want to apply 2 of the 5 coupons. How do we get this? Multiply 5 by 2 to
-#get 10, then subtract 2 incrementally until you get to the beer :count, or less than.
 
 def apply_clearance(cart)
 cart.each do |a, b|
