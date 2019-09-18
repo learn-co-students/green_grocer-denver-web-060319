@@ -42,10 +42,13 @@ def checkout(cart, coupons)
   total = 0
   organized_cart = consolidate_cart(cart)
   organized_cart_with_coupons = apply_coupons(organized_cart, coupons)
-  binding.pry
   organized_cart_with_coupons_and_clearence = apply_clearance(organized_cart_with_coupons)
-
-  organized_cart_with_coupons_and_clearence.keys.map{|item| total = organized_cart[item][:price]*organized_cart[item][:count]}
-  total
+  organized_cart_with_coupons_and_clearence.keys.map{|item| total += organized_cart[item][:price]*organized_cart[item][:count]}
+  
+  if total > 100
+    total = (total * 0.9).round(2)
+  else
+    total
+  end
 
 end
