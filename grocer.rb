@@ -39,6 +39,12 @@ def apply_clearance(cart)
 end
 
 def checkout(cart, coupons)
-  consolidate_cart(cart)
+  total = 0
+  organized_cart = consolidate_cart(cart)
+  organized_cart_with_coupons = apply_coupons(organized_cart, coupons)
+  organized_cart_with_coupons_and_clearence = apply_clearance(organized_cart_with_coupons)
+
+  organized_cart_with_coupons_and_clearence.keys.map{|item| total = organized_cart[item][:price]*organized_cart[item][:count]}
+  total
 
 end
